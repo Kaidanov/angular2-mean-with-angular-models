@@ -118,8 +118,8 @@ and at the html add this
 (mouseenter) (mouseleave) - events changing the color by event and therefore updating the backgroundColor  
 
 
-** Set value reference to local control and pass it to a function back to Component **
-#input is sending it's value from html to onSave function without extra parameters. 
+** Set value reference to local control and pass it to a function back to Component **  
+ #input is sending it's value from html to onSave function without extra parameters. 
 ``` Html
 <div class="col-md-8 col-md-offset-2">
     <div class="form-group">
