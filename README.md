@@ -364,3 +364,6 @@ And you shoud connect the fields inside to the formControlName, for instance
 ``` html 
 <input type="text" id="firstName" class="form-control" formControlName="firstName">
 ```
+
+
+![Alt text](https://github.com/Kaidanov/angular2-mean-with-angular-models/edit/adding_mondgodb_to_nodejs/Ang2_node.jpg "Ang2 node.js relationship")
