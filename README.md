@@ -156,7 +156,22 @@ We can provide service on the app level or more specificaly per component when n
 ** Using Forms **  
 Create a wrapper of a form , define a local variable inside and reffer it to the object of form created by angular for you
 ``` HTML 
- <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+ <div class="col-md-8 col-md-offset-2">
+    <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+        <div class="form-group">
+            <label for="content" >Content</label>
+             <input
+                     type="text"
+                     id="content"
+                     class="form-control"
+                     ngModel
+                     name="content"
+                     required>
+
+        </div>
+        <button class="btn btn-primary" type="submit" >Save</button>
+    </form>
+</div>
 ```
 Inside the component
 ``` Typescript
@@ -164,7 +179,16 @@ export class MessageInputComponent{
     constructor(private messageService: MessageService){}
 
     onSubmit(form: NgForm){
-        console.log(form); 
-     }
+      const message = new Message(form.value.content, "tzvika");
+      this.messageService.addMessage(message);
+      form.resetForm();
+   }
 }
+```
+If the input is empty submitted it will find the added by angular classes and show it with red borders.
+``` CSS
+	input.ng-invalid.ng-touched {
+	  border: 1px solid red;
+	}
+
 ```
