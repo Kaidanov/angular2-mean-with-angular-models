@@ -234,3 +234,86 @@ export const routing = RouterModule.forRoot(APP_ROUTES);
                     </nav>
                 </header>
 ```
+
+** Child routing **
+For sub routing we can define new file of rooutes and add it as children 
+No slash here because it's relative to it's parent auth 
+So it's domain_name/auth/your_route
+```
+//all sub path should be starting with auth so no / beforre the routing here
+export const AUTH_ROUTES: Routes =[
+    {path: '' , redirectTo: 'signup' , pathMatch: 'full'},
+    {path: 'signup', component:SignupComponent},
+    {path: 'signin', component:SigninComponent},
+    {path: 'logout', component:LogoutCompnent},
+];
+
+```
+And then in the upper routing we are connecting the exporting children routes
+```
+ {path : 'auth' , component: AuthenticationComponent , children: AUTH_ROUTES}
+ 
+ ```
+
+** ReactiveFormsModule - creating your own forms approach **
+
+Don't forget to connect the ReactiveFormsModule in the app.module.ts
+```
+   imports: [BrowserModule, FormsModule, routing , ReactiveFormsModule],
+```
+
+Creating the form in the component.
+``` JS
+export class SignupComponent implements OnInit{
+    myForm: FormGroup;
+
+    onSubmit()
+    {
+        console.log(this.myForm);
+    }
+    ngOnInit(){
+        this.myForm = new FormGroup({
+           firstName: new FormControl(null, Validators.required),
+            lastName: new FormControl(null, Validators.required),
+            email: new FormControl(null, [
+                Validators.required,
+                Validators.pattern("/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/")
+            ]),
+            password: new FormControl(null, Validators.required)
+        });
+    }
+}
+```
+
+And in HTML
+``` HTML
+<div class="col-md-8 col-md-offset-2">
+    <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" class="form-control" formControlName="firstName">
+        </div>
+        <div class="form-group">
+            <label for="lastName">First Name</label>
+            <input type="text" id="lastName" class="form-control" formControlName="lastName">
+        </div>
+        <div class="form-group">
+            <label for="email">First Name</label>
+            <input type="email" id="email" class="form-control" formControlName="email">
+        </div>
+        <div class="form-group">
+            <label for="password">First Name</label>
+            <input type="password" id="password" class="form-control" formControlName="password">
+        </div>
+        <button class="btn btn-primary" type="submit"></button>
+    </form>
+</div>
+```
+
+Important - 
+You can approach the form from component without sending over the object. It recognizes it's structure because it is defined there.  
+You should adjust the form saying you are using your own -  [formGroup]="myForm"  
+And you shoud connect the fields inside to the formControlName, for instance   
+``` html 
+<input type="text" id="firstName" class="form-control" formControlName="firstName">
+```
