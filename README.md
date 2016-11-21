@@ -151,3 +151,20 @@ export class MessageInputComponent{
 ** Services **
 Used for reuse in different components.
 We can provide service on the app level or more specificaly per component when needed.
+
+
+** Using Forms **  
+Create a wrapper of a form , define a local variable inside and reffer it to the object of form created by angular for you
+``` HTML 
+ <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+```
+Inside the component
+``` Typescript
+export class MessageInputComponent{
+    constructor(private messageService: MessageService){}
+
+    onSubmit(form: NgForm){
+        console.log(form); 
+     }
+}
+```
