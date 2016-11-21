@@ -192,3 +192,45 @@ If the input is empty submitted it will find the added by angular classes and sh
 	}
 
 ```
+
+** Routing **
+Setting custom routing   
+1. pathMatch: 'full' making the interpretation of the full path . good for empty path  
+2. setting '/messages' with a slash will take you to the domain_path/your_route and not relative  
+3. for module to take our routes we need to export them, therefore - export const routing 
+4. 
+
+``` Javascript
+import {Routes, RouterModule} from "@angular/router";
+
+import {MessagesComponent} from "./messages/messages.component";
+import {AuthenticationComponent} from "./auth/authentication.component";
+
+/**
+ * Created by Tzvika on 11/21/2016.
+ */
+const APP_ROUTES: Routes = [
+    //pathMatch only matches the really empty route
+    {path : '' , redirectTo: '/messages' , pathMatch: 'full' },  // goto to localhost (to your domain) and not to #
+    {path : 'messages' , component: MessagesComponent },
+    {path : 'auth' , component: AuthenticationComponent }
+];
+
+//exporting for getting our custom routing
+export const routing = RouterModule.forRoot(APP_ROUTES);
+```
+
+** The HTML Component part **  
+1. routerLinkActive="active" - sets the link inside the li as active, adding style automatically
+2. [routerLink]="['/messages']"  - sets the same way as in routiing full path relative to your domain
+``` HTML
+		<header class="row">
+                    <nav class="col-md-8 col-md-offset-2">
+                        <ul class="nav nav-pills">
+                           <!-- (li>a)*2) -->
+                           <li routerLinkActive="active"><a [routerLink]="['/messages']" >Messenger</a></li>
+                           <li routerLinkActive="active"><a [routerLink]="['/auth']">Authentication</a></li>
+                        </ul>
+                    </nav>
+                </header>
+```
