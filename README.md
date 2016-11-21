@@ -106,7 +106,7 @@ like ``*ngIf``` or  ```my-component```
 ```
 
 
-**Creating dynamic color toggle **  
+** Creating dynamic color toggle **  
 In the compnenet define a member color with initial color
 and at the html add this
 ``` HTML
@@ -118,7 +118,7 @@ and at the html add this
 (mouseenter) (mouseleave) - events changing the color by event and therefore updating the backgroundColor  
 
 
-** Set value reference to local control and pass it to a function back to Component **  
+** Set value reference to local control and pass it to a function back to Component **   
  #input is sending it's value from html to onSave function without extra parameters. 
 ``` Html
 <div class="col-md-8 col-md-offset-2">
@@ -147,13 +147,60 @@ export class MessageInputComponent{
 }
 ```
 
-
-** Services **
-Used for reuse in different components.
+ 
+** Services  **  
+Used for reuse in different components privately for them or can be approached by the whole application through the most upper in hierarchy AppComponent  .
 We can provide service on the app level or more specificaly per component when needed.
+```
+@Component({
+    selector: 'my-app',
+    templateUrl: './app.component.html',
+    providers: [MessageService]
+
+})
+export class AppComponent {
+
+}
+```
+
+Then in any component you can just   
+1. import 
+2. use it
+```
+import {MessageService} from "./message.service";
+```
 
 
-** Using Forms **  
+```
+export class MessageComponent{
+    ///enables the parent to send data to the child
+    ///in html [message]="message" on the tag of the component
+    @Input() message: Message;
+    ///event emitter passes the data to upper component
+    @Output() editClicked = new EventEmitter<string>();
+
+    constructor(private messageService: MessageService){
+
+    }
+
+    onEdit(){
+        ///from the child to the parent
+        /// sends output to the upper component
+        ///in html (editClicked)="message.content = $event" - event holds the data
+        this.editClicked.emit("A new value");
+    }
+
+    onDelete()
+    {
+        this.messageService.deleteMessage(this.message);
+    }
+
+}
+```
+
+
+
+** Using Forms **    
 Create a wrapper of a form , define a local variable inside and reffer it to the object of form created by angular for you
 ``` HTML 
  <div class="col-md-8 col-md-offset-2">
@@ -195,10 +242,10 @@ If the input is empty submitted it will find the added by angular classes and sh
 
 ** Routing **
 Setting custom routing   
-1. pathMatch: 'full' making the interpretation of the full path . good for empty path  
-2. setting '/messages' with a slash will take you to the domain_path/your_route and not relative  
-3. for module to take our routes we need to export them, therefore - export const routing 
-4. 
+1. pathMatch: `'full'` making the interpretation of the full path . good for empty path  
+2. setting `'/messages'` with a slash will take you to the `domain_path/your_route` and not relative  
+3. for module to take our routes we need to export them, therefore - `export const routing` 
+
 
 ``` Javascript
 import {Routes, RouterModule} from "@angular/router";
@@ -221,8 +268,8 @@ export const routing = RouterModule.forRoot(APP_ROUTES);
 ```
 
 ** The HTML Component part **  
-1. routerLinkActive="active" - sets the link inside the li as active, adding style automatically
-2. [routerLink]="['/messages']"  - sets the same way as in routiing full path relative to your domain
+1. `routerLinkActive="active"` - sets the link inside the li as active, adding style automatically
+2. `[routerLink]="['/messages']"`  - sets the same way as in routiing full path relative to your domain
 ``` HTML
 		<header class="row">
                     <nav class="col-md-8 col-md-offset-2">
@@ -238,7 +285,7 @@ export const routing = RouterModule.forRoot(APP_ROUTES);
 ** Child routing **
 For sub routing we can define new file of rooutes and add it as children 
 No slash here because it's relative to it's parent auth 
-So it's domain_name/auth/your_route
+So it's `domain_name/auth/your_route`
 ```
 //all sub path should be starting with auth so no / beforre the routing here
 export const AUTH_ROUTES: Routes =[
